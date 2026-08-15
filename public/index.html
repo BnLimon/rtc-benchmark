@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WebSocket RTC Benchmark — Dhaka</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-top">
+        <h1>WebSocket RTC Benchmark</h1>
+        <a href="admin.html" class="admin-link-btn" title="Secret Admin Data Page">🔑 Admin</a>
+      </div>
+      <p class="subtitle">Real-Time Communication Performance — Mobile &amp; Broadband Networks in Dhaka</p>
+    </header>
+
+    <section id="setup-panel" class="panel">
+      <div class="field">
+        <label for="provider">Network Provider Name</label>
+        <input type="text" id="provider" placeholder="e.g. Grameenphone, Robi, Link3, Amber IT" required />
+      </div>
+
+      <div class="field">
+        <label for="networkType">Network Type</label>
+        <select id="networkType">
+          <option value="mobile">Mobile Data</option>
+          <option value="broadband">Broadband</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="location">Area / Location Label (optional)</label>
+        <input type="text" id="location" placeholder="e.g. Mirpur-10, Dhaka" />
+      </div>
+
+      <!-- Location Picker Section -->
+      <div class="field location-picker-field">
+        <label>Location Selection (Click map or drag pin)</label>
+        <div class="map-toolbar">
+          <button type="button" id="useGpsBtn" class="secondary-btn small-btn">📍 Auto-Detect My GPS</button>
+          <span class="map-hint">Click on map or drag pin to select location manually</span>
+        </div>
+        <div id="map" class="map-container"></div>
+        <div class="coords-row">
+          <div class="coord-input-group">
+            <label for="manualLat">Latitude:</label>
+            <input type="number" id="manualLat" step="any" placeholder="e.g. 23.8103" />
+          </div>
+          <div class="coord-input-group">
+            <label for="manualLng">Longitude:</label>
+            <input type="number" id="manualLng" step="any" placeholder="e.g. 90.4125" />
+          </div>
+        </div>
+        <div id="gpsStatus" class="status-box">Location loading...</div>
+      </div>
+
+      <div class="field">
+        <label for="messageSize">Message Size</label>
+        <select id="messageSize">
+          <option value="small">Small (~50 bytes)</option>
+          <option value="medium">Medium (~500 bytes)</option>
+          <option value="large">Large (~5 KB)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="sampleCount">Number of Messages to Send</label>
+        <input type="number" id="sampleCount" value="50" min="10" max="500" />
+      </div>
+
+      <button id="startBtn" class="primary-btn">Start Benchmark</button>
+      <div id="startError" class="error-text"></div>
+    </section>
+
+    <section id="progress-panel" class="panel hidden">
+      <div class="progress-header">
+        <h2>Running Benchmark...</h2>
+        <button id="stopBtn" class="danger-btn">⏹ Stop Benchmark</button>
+      </div>
+      <div id="progressLog" class="log-box"></div>
+    </section>
+
+    <section id="results-panel" class="panel hidden">
+      <h2>Results</h2>
+      <div id="resultsGrid" class="results-grid"></div>
+      <button id="saveBtn" class="primary-btn">Save to Database</button>
+      <button id="restartBtn" class="secondary-btn">Run Another Test</button>
+      <div id="saveStatus" class="status-text"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Past Results</h2>
+      <button id="loadResultsBtn" class="secondary-btn">Load Saved Results</button>
+      <div id="pastResultsTable"></div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="benchmark.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+

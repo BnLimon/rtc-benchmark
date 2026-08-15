@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Secret Data Admin Panel — RTC Benchmark</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="admin-container">
+
+    <!-- Auth View (Password Prompt) -->
+    <div id="loginSection" class="panel auth-panel">
+      <h2>🔐 Secret Admin Access</h2>
+      <p class="subtitle">Please enter the administrator password to view and manage data.</p>
+      
+      <div class="field">
+        <label for="adminPasswordInput">Password</label>
+        <input type="password" id="adminPasswordInput" placeholder="Enter secret password..." autofocus />
+      </div>
+      <button type="button" id="loginBtn" class="primary-btn">Unlock Admin Dashboard</button>
+      <div id="loginError" class="error-text"></div>
+      
+      <div class="back-link">
+        <a href="index.html">← Back to Benchmark App</a>
+      </div>
+    </div>
+
+
+    <!-- Dashboard View (Protected) -->
+    <div id="dashboardSection" class="hidden" style="display: none;">
+      <header class="admin-header">
+        <div>
+          <h1>📊 Admin Data Management</h1>
+          <p class="subtitle">Filter per field, edit, add, export to CSV, or import CSV</p>
+        </div>
+        <div class="header-actions">
+          <a href="index.html" class="secondary-btn small-btn">🏠 Main App</a>
+          <button id="logoutBtn" class="danger-btn small-btn">🔒 Logout</button>
+        </div>
+      </header>
+
+      <!-- Action Toolbar -->
+      <section class="panel toolbar-panel">
+        <div class="toolbar-left">
+          <button id="addRecordBtn" class="primary-btn small-btn">+ Add New Record</button>
+          <label class="file-upload-btn secondary-btn small-btn">
+            📥 Import CSV
+            <input type="file" id="csvFileInput" accept=".csv" class="hidden-file-input" />
+          </label>
+          <button id="exportCsvBtn" class="secondary-btn small-btn">📤 Export CSV</button>
+          <button id="refreshBtn" class="secondary-btn small-btn">🔄 Refresh Data</button>
+        </div>
+        <div class="toolbar-right">
+          <span id="recordCount" class="badge">0 Records</span>
+        </div>
+      </section>
+
+      <!-- Status Alert Box -->
+      <div id="adminStatusMsg" class="status-box hidden" style="display: none;"></div>
+
+      <!-- Data Table Panel -->
+      <section class="panel table-panel">
+        <div class="table-wrapper">
+          <table id="adminTable">
+            <thead>
+              <!-- Table Headers -->
+              <tr>
+                <th>Date / Time</th>
+                <th>Provider</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>GPS (Lat, Lng)</th>
+                <th>Msg Size</th>
+                <th>Conn (ms)</th>
+                <th>Latency (ms)</th>
+                <th>Jitter (ms)</th>
+                <th>Throughput</th>
+                <th>Reconn (ms)</th>
+                <th>Delivery %</th>
+                <th>Actions</th>
+              </tr>
+              <!-- Column Search / Filter Row -->
+              <tr class="filter-row">
+                <th><input type="text" class="col-filter" data-col="createdAt" placeholder="Filter date..." /></th>
+                <th><input type="text" class="col-filter" data-col="provider" placeholder="Filter provider..." /></th>
+                <th>
+                  <select class="col-filter" data-col="networkType">
+                    <option value="">All</option>
+                    <option value="mobile">mobile</option>
+                    <option value="broadband">broadband</option>
+                  </select>
+                </th>
+                <th><input type="text" class="col-filter" data-col="location" placeholder="Filter location..." /></th>
+                <th><input type="text" class="col-filter" data-col="gps" placeholder="Filter gps..." /></th>
+                <th>
+                  <select class="col-filter" data-col="messageSize">
+                    <option value="">All</option>
+                    <option value="small">small</option>
+                    <option value="medium">medium</option>
+                    <option value="large">large</option>
+                  </select>
+                </th>
+                <th><input type="text" class="col-filter" data-col="connTime" placeholder="Filter conn..." /></th>
+                <th><input type="text" class="col-filter" data-col="latency" placeholder="Filter latency..." /></th>
+                <th><input type="text" class="col-filter" data-col="jitter" placeholder="Filter jitter..." /></th>
+                <th><input type="text" class="col-filter" data-col="throughput" placeholder="Filter throughput..." /></th>
+                <th><input type="text" class="col-filter" data-col="reconn" placeholder="Filter reconn..." /></th>
+                <th><input type="text" class="col-filter" data-col="delivery" placeholder="Filter delivery..." /></th>
+                <th><button id="clearFiltersBtn" class="clear-btn" title="Clear all filters">❌ Clear</button></th>
+              </tr>
+            </thead>
+            <tbody id="adminTbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- Record Form Modal (For Adding / Editing Records) -->
+    <div id="recordModal" class="modal-overlay hidden" style="display: none;">
+
+      <div class="modal-content panel">
+        <div class="modal-header">
+          <h3 id="modalTitle">Add New Benchmark Record</h3>
+          <button id="closeModalBtn" class="close-btn">&times;</button>
+        </div>
+        <form id="recordForm" onsubmit="return false;">
+          <input type="hidden" id="editRecordId" value="" />
+          
+          <div class="form-grid">
+            <div class="field">
+              <label for="formProvider">Provider Name *</label>
+              <input type="text" id="formProvider" placeholder="e.g. Grameenphone" required />
+            </div>
+
+            <div class="field">
+              <label for="formNetworkType">Network Type *</label>
+              <select id="formNetworkType">
+                <option value="mobile">Mobile Data</option>
+                <option value="broadband">Broadband</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="formLocation">Location Label</label>
+              <input type="text" id="formLocation" placeholder="e.g. Mirpur-10, Dhaka" />
+            </div>
+
+            <div class="field">
+              <label for="formMessageSize">Message Size *</label>
+              <select id="formMessageSize">
+                <option value="small">Small (~50 bytes)</option>
+                <option value="medium">Medium (~500 bytes)</option>
+                <option value="large">Large (~5 KB)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="formLat">GPS Latitude *</label>
+              <input type="number" step="any" id="formLat" placeholder="23.8103" required />
+            </div>
+
+            <div class="field">
+              <label for="formLng">GPS Longitude *</label>
+              <input type="number" step="any" id="formLng" placeholder="90.4125" required />
+            </div>
+
+            <div class="field">
+              <label for="formAccuracy">GPS Accuracy (meters)</label>
+              <input type="number" step="any" id="formAccuracy" placeholder="e.g. 10" />
+            </div>
+
+            <div class="field">
+              <label for="formConnTime">Connection Time (ms)</label>
+              <input type="number" step="any" id="formConnTime" placeholder="45" />
+            </div>
+
+            <div class="field">
+              <label for="formAvgLatency">Avg Latency / RTT (ms)</label>
+              <input type="number" step="any" id="formAvgLatency" placeholder="32.5" />
+            </div>
+
+            <div class="field">
+              <label for="formJitter">Jitter (ms)</label>
+              <input type="number" step="any" id="formJitter" placeholder="4.2" />
+            </div>
+
+            <div class="field">
+              <label for="formThroughput">Throughput (msg/sec)</label>
+              <input type="number" step="any" id="formThroughput" placeholder="30.5" />
+            </div>
+
+            <div class="field">
+              <label for="formReconnTime">Reconnection Time (ms)</label>
+              <input type="number" step="any" id="formReconnTime" placeholder="120" />
+            </div>
+
+            <div class="field">
+              <label for="formDeliveryRate">Delivery Rate (0.0 to 1.0)</label>
+              <input type="number" step="any" id="formDeliveryRate" placeholder="1.0" min="0" max="1" />
+            </div>
+
+            <div class="field">
+              <label for="formSampleCount">Sample Count</label>
+              <input type="number" id="formSampleCount" placeholder="50" value="50" />
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" id="cancelModalBtn" class="secondary-btn">Cancel</button>
+            <button type="submit" id="saveRecordBtn" class="primary-btn">Save Record</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

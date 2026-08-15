@@ -1,0 +1,276 @@
+/* admin.css — Styling for Secret Admin Data Management Panel */
+
+.admin-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+.auth-panel {
+  max-width: 440px;
+  margin: 80px auto 0;
+  text-align: center;
+}
+
+.auth-panel h2 {
+  margin-bottom: 8px;
+}
+
+.auth-panel .subtitle {
+  margin-bottom: 20px;
+}
+
+.auth-panel .back-link {
+  margin-top: 16px;
+  font-size: 0.85rem;
+}
+
+.auth-panel .back-link a {
+  color: #4fd1c5;
+  text-decoration: none;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.toolbar-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 20px;
+}
+
+.toolbar-left {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.hidden-file-input {
+  display: none !important;
+}
+
+.file-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.danger-btn {
+  background: #f56565;
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 6px 12px;
+}
+
+.danger-btn:hover {
+  background: #e53e3e;
+}
+
+.badge {
+  background: #2a3441;
+  color: #4fd1c5;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid #4fd1c5;
+}
+
+.table-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  max-height: 650px;
+  overflow-y: auto;
+}
+
+#adminTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+#adminTable th, #adminTable td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #2a3441;
+}
+
+#adminTable thead th {
+  position: sticky;
+  top: 0;
+  background: #1a2028;
+  z-index: 5;
+  color: #4fd1c5;
+  border-bottom: 2px solid #2a3441;
+}
+
+.filter-row th {
+  position: sticky;
+  top: 41px;
+  background: #151a21 !important;
+  z-index: 4;
+  padding: 6px 8px !important;
+}
+
+.col-filter {
+  width: 100%;
+  padding: 4px 6px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  background: #0f1419;
+  border: 1px solid #2a3441;
+  color: #e6e6e6;
+}
+
+.col-filter:focus {
+  border-color: #4fd1c5;
+  outline: none;
+}
+
+.clear-btn {
+  background: #2a3441;
+  color: #f56565;
+  border: 1px solid #f56565;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.clear-btn:hover {
+  background: #f56565;
+  color: #fff;
+}
+
+.action-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.edit-btn {
+  background: #3182ce;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: #2b6cb0;
+}
+
+.del-btn {
+  background: #e53e3e;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.del-btn:hover {
+  background: #c53030;
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.modal-overlay.hidden, .hidden {
+  display: none !important;
+}
+
+
+.modal-content {
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #1a2028;
+  border: 1px solid #4fd1c5;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #2a3441;
+  padding-bottom: 10px;
+}
+
+.modal-header h3 {
+  color: #4fd1c5;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #9aa5b1;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #fff;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  border-top: 1px solid #2a3441;
+  padding-top: 14px;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
