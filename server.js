@@ -1,4 +1,12 @@
 require('dotenv').config();
+const dns = require('dns');
+// Bypasses local router/ISP DNS SRV query restriction (querySrv ECONNREFUSED)
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch (e) {
+  // ignore fallback
+}
+
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
